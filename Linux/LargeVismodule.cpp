@@ -94,7 +94,7 @@ static PyObject *LoadFromList(PyObject *self, PyObject *args)
 		}
 		for (long long j = 0; j < n_dim; ++j)
 		{
-			real x = atof(PyString_AsString(PyObject_Str(PyList_GetItem(vec, j))));
+			real x = atof(PyBytes_AsString(PyObject_Str(PyList_GetItem(vec, j)))); 
 			data[ll + j] = x;
 		}
 	}
@@ -124,8 +124,17 @@ static PyMethodDef PyExtMethods[] =
 	{ NULL, NULL, 0, NULL }
 };
 
-PyMODINIT_FUNC initLargeVis()
+static struct PyModuleDef LargeVismodule =
 {
-	printf("LargeVis successfully imported!\n");
-	Py_InitModule("LargeVis", PyExtMethods);
+PyModuleDef_HEAD_INIT,
+"LargeVis",
+NULL,
+-1,
+PyExtMethods
+};
+
+PyMODINIT_FUNC
+PyInit_LargeVis(void)
+{
+return PyModule_Create(&LargeVismodule);
 }
